@@ -1,0 +1,8 @@
+(a) x := x + y
+(b) y := y + 2z
+(c) x := 3x + z
+(d) z := y - z
+
+A = {a, b, c, d}
+
+w = baadcb
