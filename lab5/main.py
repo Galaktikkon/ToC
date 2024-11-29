@@ -5,10 +5,8 @@ import sys
 import pydot
 import matplotlib.pyplot as plt
 
-transaction = tuple[str, set[str]]
 
-
-def read_input(file_name: str) -> tuple[dict[str, transaction], set[str], str]:
+def read_input(file_name: str) -> tuple[dict[str, tuple[str, set[str]]], set[str], str]:
 
     with open("examples\\" + file_name, "r") as f:
 
@@ -19,7 +17,7 @@ def read_input(file_name: str) -> tuple[dict[str, transaction], set[str], str]:
     w: str = word[4:]
     A: set[str] = set(alphabet[5:-1].split(sep=", "))
 
-    T: dict[str, transaction] = {}
+    T: dict[str, tuple[str, set[str]]] = {}
 
     for t in transactions:
         key: str = t[1]
@@ -31,7 +29,7 @@ def read_input(file_name: str) -> tuple[dict[str, transaction], set[str], str]:
 
 
 def get_sets(
-    T: dict[str, transaction], A: list[str]
+    T: dict[str, tuple[str, set[str]]], A: list[str]
 ) -> tuple[set[tuple[str, str]], set[tuple[str, str]]]:
 
     D: set[tuple[str, str]] = set()
@@ -65,7 +63,7 @@ def get_indexed_word(w: str) -> list[str]:
     return indexed_word
 
 
-def get_diekert(D: set[tuple[str, str]], w: str):
+def get_diekert(D: set[tuple[str, str]], w: str) -> dict[str, set[str]]:
 
     G: dict[str, set[str]] = {}
 
@@ -148,7 +146,7 @@ def get_hesse(P: dict[(str, str), list[str]], w: str) -> dict[str, set[str]]:
     return H
 
 
-def find_roots(P: dict[(str, str), list[str]]) -> list[str]:
+def find_roots(P: dict[(str, str), list[str]]) -> set[str]:
 
     longest_path = max(len(P[key]) for key in P.keys())
 
@@ -195,7 +193,7 @@ def get_foata(H: dict[str, set[str]], roots: set[str]) -> str:
     return "".join(list(map(lambda l: f'({"".join(sorted(l))})', bundler.values())))
 
 
-def visualize_graph(graph: pydot.Dot):
+def visualize_graph(graph: pydot.Dot) -> None:
     graph_path = "graph.png"
     graph.write_png(graph_path)
 
@@ -214,7 +212,7 @@ def save_to_file(
     F: dict[str, set[str]],
     filename: str,
     graph: pydot.Dot,
-):
+) -> None:
 
     save_file = f"results\\{filename}_result.txt"
     temp = f"results\\{filename}.dot"
