@@ -1,0 +1,10 @@
+(a) x := x + 1
+(b) y := y + 2z
+(c) x := 3x + z
+(d) w := w + v
+(e) z := y − z
+(f) v := x + v
+
+A = {a, b, c, d, e, f}
+
+w = acdcfbbe
