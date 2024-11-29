@@ -190,6 +190,8 @@ def get_foata(H: dict[str, set[str]], roots: set[str]) -> str:
         else:
             bundler[D[key]] = [key[0]]
 
+    bundler = {i: bundler[i] for i in sorted(bundler.keys())}
+
     return "".join(list(map(lambda l: f'({"".join(sorted(l))})', bundler.values())))
 
 
