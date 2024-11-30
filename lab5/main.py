@@ -132,7 +132,9 @@ def find_longest_paths(G: dict[str, set[str]]) -> dict[(str, str), list[str]]:
     return P
 
 
-def get_hesse(P: dict[(str, str), list[str]], w: str) -> dict[str, set[str]]:
+def get_hesse(G: dict[str, set[str]], w: str) -> dict[str, set[str]]:
+
+    P = find_longest_paths(G)
 
     H: dict[str, set[str]] = {}
 
@@ -146,20 +148,25 @@ def get_hesse(P: dict[(str, str), list[str]], w: str) -> dict[str, set[str]]:
     return H
 
 
-def find_roots(P: dict[(str, str), list[str]]) -> set[str]:
+def find_roots(H: dict[str, set[str]]) -> set[str]:
 
-    longest_path = max(len(P[key]) for key in P.keys())
+    is_root: dict[str, bool] = {}
 
-    roots = list(filter(lambda key: len(P[key]) == longest_path, P.keys()))
+    for v in H:
+        is_root[v] = True
 
-    return set([r[0] for r in roots])
+    for v in H:
+        for u in H[v]:
+            is_root[u] = False
+
+    return set(filter(lambda v: is_root[v], is_root.keys()))
 
 
-def get_foata(H: dict[str, set[str]], roots: set[str]) -> str:
+def get_foata(H: dict[str, set[str]]) -> str:
 
     start: str = "start"
 
-    H[start] = roots
+    H[start] = find_roots(H)
 
     D: dict[str, int] = {}
 
@@ -262,10 +269,8 @@ if __name__ == "__main__":
     D, I = get_sets(T, A)
 
     G = get_diekert(D, w)
-    P = find_longest_paths(G)
-    H = get_hesse(P, w)
-    R = find_roots(P)
-    F = get_foata(H, R)
+    H = get_hesse(G, w)
+    F = get_foata(H)
 
     vis_graph = create_vis_graph(H, w)
 
