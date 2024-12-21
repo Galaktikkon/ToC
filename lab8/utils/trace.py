@@ -142,13 +142,12 @@ def get_hesse(G: dict[str, set[str]], word: list[str]) -> dict[str, set[str]]:
 def find_roots(T: set[str]) -> set[str]:
     min_t = min(filter(lambda t: "A" in t, T), key=lambda t: t[1])
 
-    return set(filter(lambda t: t == min_t, T))
+    return set(filter(lambda t: t[:1] == min_t[:1], T))
 
 
 def get_foata(
     H: dict[str, set[str]]
 ) -> tuple[str, dict[str, int], dict[int, np.ndarray[str]]]:
-
     start: str = "start"
 
     H[start] = find_roots(H)

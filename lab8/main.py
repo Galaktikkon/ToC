@@ -82,7 +82,7 @@ def concurrent_gauss(M: np.ndarray[float], T: np.ndarray[str]) -> np.ndarray[flo
 
 if __name__ == "__main__":
 
-    file_name: str = sys.argv[1] if len(sys.argv) > 1 else "input.txt"
+    file_name: str = sys.argv[1] if len(sys.argv) > 1 else "input1.txt"
 
     M = read_input(file_name=file_name)
     # k = 3
@@ -92,12 +92,16 @@ if __name__ == "__main__":
     n = M.shape[0]
 
     T = get_transactions(n)
-    # S = get_alphabet(T)
-    # D = get_dependency_set(S)
+    S = get_alphabet(T)
+    D = get_dependency_set(S)
 
-    # G = get_diekert(D, S)
-    # H = get_hesse(G, S)
-    # FF, FD, FP = get_foata(H)
+    G = get_diekert(D, S)
+    H = get_hesse(G, S)
+    FF, FD, FP = get_foata(H)
+    vis_graph = create_vis_graph(H, S, FD)
+
+    visualize_graph(vis_graph)
+
     print(M)
     a = M[:, [range(n)]].reshape(n, -1)
     b = M[:, n]
