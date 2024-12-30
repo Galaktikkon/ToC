@@ -1,7 +1,10 @@
 import os
+import sys
 from matplotlib import pyplot as plt
 import matplotlib.colors as mcolors
 import pydot
+from utils.read import *
+from utils.trace import *
 
 
 def create_vis_graph(
@@ -45,4 +48,24 @@ def visualize_graph(graph: pydot.Dot) -> None:
 
 
 if __name__ == "__main__":
-    pass
+
+    if len(sys.argv) != 2:
+        print("Usage: python vis.py <input_file>")
+        sys.exit(1)
+
+    file_name: str = sys.argv[1]
+
+    M = read_input(file_name=file_name)
+    n = M.shape[0]
+
+    T = get_transactions(n)
+    S = get_alphabet(T)
+    D = get_dependency_set(S)
+
+    G = get_diekert(D, S)
+    H = get_hesse(G, S)
+    FF, FD, FP = get_foata(H)
+
+    vis_graph = create_vis_graph(H, S, FD)
+
+    visualize_graph(vis_graph)
