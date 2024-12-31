@@ -7,7 +7,6 @@ def read_input(file_name: str, dir: str = "examples") -> np.ndarray[int]:
     with open(os.path.join(dir, file_name), "r") as f:
 
         lines: list[str] = f.read().split(sep="\n")
-
     data: np.ndarray[float] = np.array(
         list(
             map(

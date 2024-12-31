@@ -42,13 +42,16 @@ def asynchronous_gauss(I: np.ndarray[float]) -> np.ndarray[float]:
     pools: list[dict[int, np.ndarray[str]]] = []
 
     T = get_transactions(n)
-
+    FNF = ""
     for t in T:
         D = get_dependency_set(t)
         G = get_diekert(D, t)
         H = get_hesse(G, t)
-        _, _, FP = get_foata(H)
+        F, _, FP = get_foata(H)
         pools.append(FP)
+        FNF += F
+
+    print(f"Foata normal form: \n{FNF}\n")
 
     for pool in pools:
         for i in pool.keys():
@@ -108,11 +111,10 @@ if __name__ == "__main__":
     G = get_diekert(D, S)
     H = get_hesse(G, S)
     FF, FD, FP = get_foata(H)
-
-    Q = asynchronous_gauss(M)
-    J = get_singular(Q)
     print(f"Input matrix: \n {M}")
     print()
+    Q = asynchronous_gauss(M)
+    J = get_singular(Q)
     print(f"Triangular matrix form: \n{Q}")
     print()
     print(f"Singular matrix form: \n {J}")
